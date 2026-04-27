@@ -27,4 +27,7 @@ class Config:
         """Validate the settings"""
         missing = [k for k in ["GROQ_API_KEY", "COHERE_API_KEY", "TAVILY_API_KEY"] if not getattr(self, k) ]
         if missing:
-            raise ValueError(f"Missing required environment variables: {', '.join(missing)}")    
+            raise ValueError(f"Missing required environment variables: {', '.join(missing)}")   
+
+
+config = Config() 
