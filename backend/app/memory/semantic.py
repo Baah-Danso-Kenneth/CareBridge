@@ -187,8 +187,3 @@ class SemanticMemory(MemoryBase):
         """Delete not supported for semantic memory"""
         logger.warning("SemanticMemory.delete is not implemented")
         return False
-    
-
-
-def create_default_knowledge(output_path: str = "data/medical_knowledge.json"):
-    pass
