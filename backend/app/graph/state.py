@@ -39,18 +39,11 @@ class AgentState(TypedDict):
     execution_trace: List[str]
     
 
+def create_initial_state(patient_id: str, symptoms: str, conversation_id: Optional[str] = None) -> AgentState: 
+    """Create a fresh initial state for a patient interaction"""
+    import uuid
 
-
-
-    def create_initial_state(
-        patient_id: str,
-        symptoms: str,
-        conversation_id: Optional[str] = None
-        ) -> AgentState: 
-        """Create a fresh initial state for a patient interaction"""
-        import uuid
-
-        return {
+    return {
             "patient_id": patient_id,
             "symptoms": symptoms,
             "conversation_id": conversation_id or str(uuid.uuid4()),
@@ -77,34 +70,34 @@ class AgentState(TypedDict):
 
             "errors": [],
             "execution_trace": []
-        }
-
-
-    def add_to_trace(state: AgentState, message: str):
-        """Add a message to the execution trace for debugging"""
-        trace = state.get("execution", [])
-        trace.append(message)
-        state["execution_trace"] = trace
-        return state
+    }
     
-    def add_error(state: AgentState, error: str) -> AgentState:
-        """Add errors to the state"""
-        errors = state.get("errors", [])
-        errors.append(error)
-        state["errors"] = errors
-        return state
+def add_to_trace(state: AgentState, message: str):
+    """Add a message to the execution trace for debugging"""
+    trace = state.get("execution", [])
+    trace.append(message)
+    state["execution_trace"] = trace
+    return state
+    
+def add_error(state: AgentState, error: str) -> AgentState:
+    """Add errors to the state"""
+    errors = state.get("errors", [])
+    errors.append(error)
+    state["errors"] = errors
+    return state
 
-    def has_errors(state: AgentState) -> bool:
-        """Check if state has any errors"""
-        return len(state.get("errors",[])) > 0
+
+def has_errors(state: AgentState) -> bool:
+    """Check if state has any errors"""
+    return len(state.get("errors",[])) > 0
 
     
-    def increment_attempt(state: AgentState) -> AgentState:
-        """Increment the attempt counter"""
-        state["attempt_number"] = state.get("attempt_number", 1) + 1
-        return state
+def increment_attempt(state: AgentState) -> AgentState:
+    """Increment the attempt counter"""
+    state["attempt_number"] = state.get("attempt_number", 1) + 1
+    return state
 
 
-    def is_max_attempts_reacehd(state: AgentState, max_attempts: int = 3) -> bool:
-        """Check if max attempts reached"""
-        return state.get("attempt_number", 1) > max_attempts
+def is_max_attempts_reacehd(state: AgentState, max_attempts: int = 3) -> bool:
+    """Check if max attempts reached"""
+    return state.get("attempt_number", 1) > max_attempts
