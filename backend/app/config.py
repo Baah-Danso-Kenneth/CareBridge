@@ -21,6 +21,9 @@ class Config:
     MAX_ATTEMPTS = 3
     PASS_THRESHOLD = 0.7
 
+    FHIR_BASE_URL = os.getenv("FHIR_BASE_URL", "https://hapi.fhir.org/baseR4")
+    FHIR_TIMEOUT = int(os.getenv("FHIR_TIMEOUT", "10"))
+    FHIR_ENABLED = os.getenv("FHIR_ENABLED", "true").lower() == "true"
 
 
     def validate(self):
