@@ -15,7 +15,7 @@ from app.prompts import (
 logger = logging.getLogger(__name__)
 
 
-class UrgencyClassifier(MCPToolServer):
+class UrgencyClassifierTool(MCPToolServer):
     """
     MCP-complaint tool for urgency classification.
     PURE FUNCTION - NO LLM. Returns prompt template and validates response.

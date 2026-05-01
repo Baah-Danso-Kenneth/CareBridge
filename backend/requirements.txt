@@ -1,0 +1,39 @@
+# Web Framework
+fastapi
+uvicorn[standard]
+
+# Data Validation
+pydantic
+pydantic-settings
+email-validator
+
+# Database
+sqlalchemy[asyncio]
+alembic
+asyncpg
+psycopg2-binary
+
+# Security
+python-jose[cryptography]
+passlib[bcrypt]
+bcrypt
+python-dotenv
+
+# Real-time
+python-socketio
+
+# AI & Agents
+langchain-groq
+langchain-core
+langgraph
+langchain-cohere
+tavily-python
+
+
+# Utilities
+apscheduler
+aiohttp
+numpy
+faiss-cpu
+requests
+ 

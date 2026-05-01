@@ -13,7 +13,7 @@ from app.prompts import (
 logger = logging.getLogger(__name__)
 
 
-class SymptomAnalyzer(MCPToolServer):
+class SymptomAnalyzerTool(MCPToolServer):
     """
     MCP-compliant tool for symptom analysis.
     Pure Function - No LLM. Returns prompt template for validates response

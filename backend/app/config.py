@@ -21,10 +21,16 @@ class Config:
     MAX_ATTEMPTS = 3
     PASS_THRESHOLD = 0.7
 
+    FHIR_BASE_URL = os.getenv("FHIR_BASE_URL", "https://hapi.fhir.org/baseR4")
+    FHIR_TIMEOUT = int(os.getenv("FHIR_TIMEOUT", "10"))
+    FHIR_ENABLED = os.getenv("FHIR_ENABLED", "true").lower() == "true"
 
 
     def validate(self):
         """Validate the settings"""
         missing = [k for k in ["GROQ_API_KEY", "COHERE_API_KEY", "TAVILY_API_KEY"] if not getattr(self, k) ]
         if missing:
-            raise ValueError(f"Missing required environment variables: {', '.join(missing)}")    
+            raise ValueError(f"Missing required environment variables: {', '.join(missing)}")   
+
+
+config = Config() 
