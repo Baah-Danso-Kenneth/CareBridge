@@ -33,6 +33,12 @@ class TriageRequest(BaseModel):
         description="FHIR authentication token (provided by platform)"
     )
 
+    conversation_id: Optional[str] = Field(
+        None,
+        description="Existing conversation ID for continuing session"
+    )
+
+    
     @validator("symptoms")
     def symptoms_not_empty(cls, v):
         if not v or not v.strip():
