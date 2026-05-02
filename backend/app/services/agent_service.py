@@ -12,7 +12,7 @@ from app.agents.executor import ExecutorAgent
 from app.agents.critic import CriticAgent
 from app.memory.episodic import EpisodicMemory
 from app.memory.semantic import SemanticMemory
-from app.memory.procedural import ProceduarlMemory
+from app.memory.procedural import ProceduralMemory
 from app.graph.state import create_initial_state
 
 
@@ -29,7 +29,7 @@ class AgentService:
     """
 
     def __init__(self):
-        self.procedural_memory = ProceduarlMemory()
+        self.procedural_memory = ProceduralMemory()
         knowledge_path = Path(__file__).parent.parent.parent / "data" / "medical_knowledge.json"
 
         if not knowledge_path.exists():
@@ -68,7 +68,7 @@ class AgentService:
         episodic_context = episodic_memory.get_recent_sessions(limit=3)
 
         if episodic_context:
-            logger.info("Loaded {len(episodic_context)} past sessions from episodic memory")
+            logger.info(f"Loaded {len(episodic_context)} past sessions from episodic memory")
 
         initial_state = create_initial_state(
             patient_id=patient_id,
@@ -98,7 +98,7 @@ class AgentService:
         verdict = final_state.get("critic_verdict", "UNKNOWN")
         attempts = final_state.get("attempt_number",1) - 1
         urgency_result = final_state.get("urgency_result", {})
-        symptom_analysis = final_state.get("symptom_analyis", {})
+        symptom_analysis = final_state.get("symptom_analysis", {})
         disclaimer_added = final_state.get("disclaimer_added", False)
         errors = final_state.get("errors", [])
 
@@ -156,7 +156,7 @@ class AgentService:
         """
         return {
             "success": True,
-            "message": f"Rating {rating}/5 recored",
+            "message": f"Rating {rating}/5 recorded",
             "patient_id": patient_id
         }
     

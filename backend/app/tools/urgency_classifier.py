@@ -6,8 +6,8 @@ from typing import Dict, Any, Optional, List
 from app.tools.base import MCPToolServer, MCPToolResult, MCPToolStatus, MCPToolDescriptor
 
 from app.prompts import (
-    URGENCY_CLASSIFICATION_SYSTEM_PROMPT,
-    URGENCY_CLASSIFICATION_HUMAN_PROMPT,
+    URGENCY_CLASSIFIER_SYSTEM_PROMPT,
+    URGENCY_CLASSIFIER_HUMAN_PROMPT,
     EMERGENCY_DISCLAIMER
 )
 
@@ -51,7 +51,7 @@ class UrgencyClassifierTool(MCPToolServer):
 
         disclaimer = self._check_emergency_keywords(symptoms)
 
-        user_prompt = URGENCY_CLASSIFICATION_HUMAN_PROMPT.format(
+        user_prompt = URGENCY_CLASSIFIER_HUMAN_PROMPT.format(
             symptoms=symptoms,
             patient_history=history_text,
             possible_conditions=conditions_text,
@@ -60,7 +60,7 @@ class UrgencyClassifierTool(MCPToolServer):
 
 
         return {
-            "system": URGENCY_CLASSIFICATION_SYSTEM_PROMPT,
+            "system": URGENCY_CLASSIFIER_SYSTEM_PROMPT,
             "user": user_prompt
         }
     

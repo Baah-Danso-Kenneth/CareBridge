@@ -58,7 +58,7 @@ class ExecutorAgent(A2AAgent):
 
     
 
-    def process_taks(self, task: A2ATask) -> A2ATask:
+    def process_task(self, task: A2ATask) -> A2ATask:
         """Execute the plan and produce recommendation"""
 
         task.update_status(A2ATaskStatus.WORKING)

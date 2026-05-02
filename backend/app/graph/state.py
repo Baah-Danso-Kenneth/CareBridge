@@ -1,4 +1,4 @@
-from backend.app.memory import episodic
+from app.memory import episodic
 from app.tools import patient_history
 from typing import TypedDict, List, Dict, Any, Optional
 

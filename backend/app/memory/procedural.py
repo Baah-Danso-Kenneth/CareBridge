@@ -5,7 +5,7 @@ from app.memory.base import MemoryBase
 logger = logging.getLogger(__name__)
 
 
-class ProceduarlMemory(MemoryBase):
+class ProceduralMemory(MemoryBase):
     """
     Procedural Memory for clinical guidelines and rules.
 
@@ -18,10 +18,10 @@ class ProceduarlMemory(MemoryBase):
 
     def __init__(self):
         self.rules = self._load_rules()
-        logger.info("ProceduarlMemory initialized")
+        logger.info("ProceduralMemory initialized")
 
     def _load_rules(self):
-        """Load Proceduarl rules"""
+        """Load Procedural rules"""
         return {
             #Safety rules
             "safety":"""
