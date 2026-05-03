@@ -1,0 +1,99 @@
+{
+  "patient_id": "example",
+  "session_history": [
+    {
+      "timestamp": "2026-05-02T22:11:57.765792",
+      "symptoms": "I have a headache and fever for 2 days",
+      "urgency_level": {
+        "urgency_level": "UNKNOWN"
+      },
+      "recommendation": "I'm concerned about your headache and fever, and I want to help you get the care you need. Given your symptoms, it's possible that you may have a viral or bacterial infection, and I recommend that you see a healthcare professional as soon as possible to determine the cause and get proper treatment. ",
+      "score": 100
+    },
+    {
+      "timestamp": "2026-05-02T22:17:49.926482",
+      "symptoms": "I have a headache and fever for 2 days",
+      "urgency_level": {
+        "urgency_level": "UNKNOWN"
+      },
+      "recommendation": "I'm concerned about your headache and fever, and I want to help you get the care you need. Given your symptoms, it's possible that you may have a viral or bacterial infection, and I recommend that you see a healthcare professional as soon as possible to determine the cause. Please seek medical atten",
+      "score": 100
+    },
+    {
+      "timestamp": "2026-05-02T23:13:12.922373",
+      "symptoms": "I have a headache and fever for 2 days",
+      "urgency_level": {
+        "urgency_level": "UNKNOWN"
+      },
+      "recommendation": "I'm concerned about your symptoms, and given your history of smallpox and hypertension, it's essential to consult a healthcare professional as soon as possible. Considering the possibilities of a viral infection or meningitis, I recommend scheduling an appointment with your doctor today to determine",
+      "score": 100
+    },
+    {
+      "timestamp": "2026-05-02T23:19:27.674704",
+      "symptoms": "I have a headache and fever for 2 days",
+      "urgency_level": {
+        "urgency_level": "UNKNOWN"
+      },
+      "recommendation": "I'm concerned about your symptoms, and it's possible that you may have a viral infection or another condition such as meningitis. Given the uncertainty and potential severity, I recommend that you seek medical attention as soon as possible to determine the cause of your headache and fever. Please co",
+      "score": 90
+    },
+    {
+      "timestamp": "2026-05-02T23:37:31.927497",
+      "symptoms": "I have a headache and fever for 2 days",
+      "urgency_level": {
+        "urgency_level": "UNKNOWN"
+      },
+      "recommendation": "I'm concerned about your headache and fever, and given your history, it's possible that you may be experiencing a viral or bacterial infection. I recommend that you see a healthcare professional as soon as possible to determine the cause of your symptoms. Please seek medical attention within the nex",
+      "score": 100
+    },
+    {
+      "timestamp": "2026-05-02T23:42:51.599085",
+      "symptoms": "I have a headache and fever for 2 days",
+      "urgency_level": {
+        "urgency_level": "UNKNOWN"
+      },
+      "recommendation": "I'm concerned about your headache and fever, and I recommend that you see a healthcare professional as soon as possible to determine the cause. Given your history of smallpox and hypertension, it's essential to have a thorough evaluation to rule out any potential complications. Please schedule an ap",
+      "score": 100
+    },
+    {
+      "timestamp": "2026-05-02T23:46:04.309013",
+      "symptoms": "I have a headache and fever for 2 days",
+      "urgency_level": {
+        "urgency_level": "UNKNOWN"
+      },
+      "recommendation": "I'm concerned about your symptoms, and given the possibilities of a viral infection or meningitis, I recommend that you seek medical attention as soon as possible. Please rest, stay hydrated, and try to manage your symptoms while you wait to see a healthcare professional. This is not medical advice.",
+      "score": 100
+    },
+    {
+      "timestamp": "2026-05-02T23:52:26.722060",
+      "symptoms": "I have a headache and fever for 2 days",
+      "urgency_level": {
+        "urgency_level": "UNKNOWN"
+      },
+      "recommendation": "I'm concerned about your symptoms, and given your history, it's possible that you may have a viral infection or something more serious like meningitis. I recommend that you seek medical attention as soon as possible to determine the cause of your headache and fever. Please rest, stay hydrated, and c",
+      "score": 100
+    },
+    {
+      "timestamp": "2026-05-03T00:05:25.603856",
+      "symptoms": "I have a headache and fever for 2 days",
+      "urgency_level": {
+        "urgency_level": "UNKNOWN"
+      },
+      "recommendation": "I'm concerned about your symptoms, and given your history, it's possible that you may have a viral infection or another condition such as meningitis. I recommend that you seek medical attention as soon as possible to determine the cause of your headache and fever. Please drink plenty of fluids and r",
+      "score": 100
+    },
+    {
+      "timestamp": "2026-05-03T00:11:16.802086",
+      "symptoms": "I have a headache and fever for 2 days",
+      "urgency_level": {
+        "urgency_level": "URGENT"
+      },
+      "recommendation": "I'm concerned about your symptoms, and given your history and the possibility of a viral infection or meningitis, I strongly recommend seeking medical care within the next 24 hours. Please rest, stay hydrated, and try to manage your symptoms while you await medical attention. This is not medical adv",
+      "score": 90
+    }
+  ],
+  "past_recommendations": [],
+  "preferences": {},
+  "created_at": "2026-05-02T19:57:19.947276",
+  "updated_at": "2026-05-02T19:57:19.947292"
+}

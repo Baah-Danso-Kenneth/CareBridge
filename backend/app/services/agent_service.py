@@ -99,6 +99,8 @@ class AgentService:
         attempts = final_state.get("attempt_number",1) - 1
         urgency_result = final_state.get("urgency_result", {})
         symptom_analysis = final_state.get("symptom_analysis", {})
+        logger.info(f"DEBUG: symptom_analysis from final_state: {symptom_analysis}")
+        logger.info(f"DEBUG: conditions: {symptom_analysis.get('conditions', [])}")
         disclaimer_added = final_state.get("disclaimer_added", False)
         errors = final_state.get("errors", [])
 

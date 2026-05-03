@@ -100,7 +100,7 @@ def executor_node(state: AgentState) -> Dict[str, Any]:
     )
 
 
-    result_task = executor_node.process_task(task)
+    result_task = executor_agent.process_task(task)
 
     if result_task.status == "failed":
         add_error(state, f"Executor failed: {result_task.errors}")
@@ -172,7 +172,7 @@ def guardrail_node(state: AgentState) -> Dict[str, Any]:
 
     recommendation = state.get("raw_recommendation")
 
-    disclaimer_keywords = ["not medical advice", "consult a", "health proffessional"]
+    disclaimer_keywords = ["not medical advice", "consult a", "healthcare professional"]
     has_disclaimer = any(kw in recommendation.lower() for kw in disclaimer_keywords)
 
     final_recommendation = recommendation
@@ -181,7 +181,11 @@ def guardrail_node(state: AgentState) -> Dict[str, Any]:
     if not has_disclaimer:
         disclaimer = "\n\n**Disclaimer:** This is not medical advice Consult a healthcare proffessional"
         final_recommendation = recommendation + disclaimer
+        disclaimer_added = True
         logger.info("Added medical disclaimer ")
+
+    else:
+        disclaimer_added = True 
 
     logger.info("Guardrail check complete")
 

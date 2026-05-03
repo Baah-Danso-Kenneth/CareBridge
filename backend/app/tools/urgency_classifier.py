@@ -141,9 +141,9 @@ class UrgencyClassifierTool(MCPToolServer):
         parts = []
 
         if patient_history.get("conditions"):
-            parts.append("Existing conditions: {', '.join(patient_history['conditions'])}")
+            parts.append(f"Existing conditions: {', '.join(patient_history['conditions'])}")
         if patient_history.get("medications"):
-            parts.append("Current medications: {', '.join(patient_history['medications'])}")
+            parts.append(f"Current medications: {', '.join(patient_history['medications'])}")
         if patient_history.get("allergies"):
             parts.append(f"Allergies: {', '.join(patient_history['allergies'])}")
 
@@ -161,7 +161,7 @@ class UrgencyClassifierTool(MCPToolServer):
         for condition in possible_conditions[:5]:
             name = condition.get("name", "Unknown")
             confidence = condition.get("confidence", 0)
-            lines.append(f"-{name} (confidence: {confidence})")
+            lines.append(f"- {name} (confidence: {confidence})")
 
         return "\n".join(lines) if lines else "None Provided"
     

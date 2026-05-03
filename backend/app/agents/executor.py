@@ -92,11 +92,15 @@ class ExecutorAgent(A2AAgent):
                     )
 
                     if result.status.value == "success":
-                        symptom_analysis = self._call_llm_for_analysis(
-                            symptoms,
-                            patient_history,
-                            symptom_analysis.get("prompt",{})
-                        )
+                        if result.content.get("requires_llm"):
+                            logger.info(f"DEBUG: Calling LLM for analysis with prompt: {result.content.get('prompt', {})}")
+                            symptom_analysis = self._call_llm_for_analysis(
+                                symptoms,
+                                patient_history,
+                                result.content.get("prompt", {})
+                            )
+                        else:
+                            symptom_analysis = result.content
 
                 elif tool_name == "UrgencyClassifierTool":
                     result = self.urgency_classifier.execute(
@@ -106,15 +110,16 @@ class ExecutorAgent(A2AAgent):
                     )
 
                     if result.status.value == "success":
-                        urgency_result = result.content
-                        if urgency_result.get("requires_llm"):
+                        if result.content.get("requires_llm"):
+                            logger.info(f"DEBUG: Calling LLM for urgency with prompt: {result.content.get('prompt', {})}")
                             urgency_result = self._call_llm_for_urgency(
                                 symptoms,
                                 patient_history,
                                 symptom_analysis,
-                                urgency_result.get("prompt", {})
+                                result.content.get("prompt",{})
                             )
-
+                        else:
+                            urgency_result = result.content
                     
                 elif tool_name == "GuardrailTool":
                         pass
@@ -138,8 +143,8 @@ class ExecutorAgent(A2AAgent):
             }
 
             task.update_status(A2ATaskStatus.COMPLETED)
-
-            logger.info(f"ExecutorAgent: complete, urgency={urgency_result.get("urgency_level")}")
+            logger.info(f"ExecutorAgent: complete, urgency={urgency_result.get('urgency_level')}")
+        
         except Exception as e:
             logger.error(f"ExecutorAgent failed: {e}")
             task.errors.append(str(e))
@@ -151,30 +156,49 @@ class ExecutorAgent(A2AAgent):
 
     
     def _call_llm_for_analysis(self, symptoms: str, patient_history: Dict, prompt_data: Dict) -> Dict:
-        """Call LLM to analyze symptoms using tools' prompt template """
+        """Call LLM to analyze symptoms using tools' prompt template"""
         try:
             system_prompt = prompt_data.get("system", "")
             user_prompt = prompt_data.get("user", "")
 
             if not system_prompt or not user_prompt:
                 return {"conditions": [], "error": "No prompt template provided"}
+            
             response = self._invoke_llm(system_prompt, user_prompt)
-
+            logger.info(f"DEBUG: Raw LLM response: {response}")
+            
+            # STEP 1: Clean markdown FIRST
             clean = response.strip()
             if clean.startswith("```"):
                 clean = clean.split("```")[1]
                 if clean.startswith("json"):
                     clean = clean[4:]
             clean = clean.strip()
-            return json.loads(clean)
+            
+            logger.info(f"DEBUG: Cleaned response: {clean}")
+            
+            # STEP 2: Parse JSON (ONLY after cleaning)
+            result = json.loads(clean)
+            
+            # STEP 3: Validate
+            if "conditions" not in result:
+                logger.warning(f"LLM response missing 'conditions' field. Got: {result.keys()}")
+                result["conditions"] = []
+            
+            logger.info(f"DEBUG: Parsed {len(result.get('conditions', []))} conditions")
+            return result
 
+        except json.JSONDecodeError as e:
+            logger.error(f"JSON parse failed: {e}")
+            return {"conditions": [], "error": str(e)}
         except Exception as e:
             logger.error(f"LLM analysis failed: {e}")
             return {"conditions": [], "error": str(e)}
 
 
+
     def _call_llm_for_urgency(self, symptoms: str, patient_history: Dict, symptom_analysis: Dict, prompt_data: Dict) -> Dict:
-        """Call LLM to classify urgency using tool's prompt template """
+        """Call LLM to classify urgency using tool's prompt template"""
         try:
             system_prompt = prompt_data.get("system", "")
             user_prompt = prompt_data.get("user", "")
@@ -183,28 +207,34 @@ class ExecutorAgent(A2AAgent):
                 return {"urgency_level": "UNKNOWN", "error": "No prompt template"}
 
             response = self._invoke_llm(system_prompt, user_prompt)
-
+            
+            # STEP 1: Clean markdown FIRST
             clean = response.strip()
             if clean.startswith("```"):
                 clean = clean.split("```")[1]
                 if clean.startswith("json"):
                     clean = clean[4:]
             clean = clean.strip()
+            
+            # STEP 2: Parse JSON (ONLY after cleaning)
+            result = json.loads(clean)
+            
+            return result
 
-            return json.loads(clean)
-
-
+        except json.JSONDecodeError as e:
+            logger.error(f"LLM urgency JSON parse failed: {e}")
+            return {"urgency_level": "UNKNOWN", "error": str(e)}
         except Exception as e:
             logger.error(f"LLM urgency failed: {e}")
-            return {"Urgency_level": "UNKNOWN", "error": str(e)}
+            return {"urgency_level": "UNKNOWN", "error": str(e)}
         
 
     def _synthesize_recommendation(self, symptoms: str, patient_history: Dict, symptom_analysis: Dict, urgency: Dict) -> str:
         """Synthesize final recommendation using LLM"""
-        conditions = urgency.get("conditions", [])
+        conditions = symptom_analysis.get("conditions", [])
         urgency_reasoning = urgency.get("reasoning", "")
         urgency_level = urgency.get("urgency_level", "UNKNOWN")
-        recommendation_action = urgency.get("recommendation_action", "")
+        recommended_action = urgency.get("recommended_action", "")
 
         human_prompt = EXECUTOR_HUMAN_PROMPT.format(
             symptoms=symptoms,
@@ -212,7 +242,7 @@ class ExecutorAgent(A2AAgent):
             possible_conditions=json.dumps(conditions, indent=2),
             urgency_level=urgency_level,
             urgency_reasoning=urgency_reasoning,
-            recommendation_action=recommendation_action
+            recommended_action=recommended_action
         )
 
         response = self._invoke_llm(EXECUTOR_SYSTEM_PROMPT, human_prompt)

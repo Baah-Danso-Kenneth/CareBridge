@@ -17,7 +17,7 @@ class AgentState(TypedDict):
     plan_steps: List[Dict]
 
     patient_history: Dict[str, Any]
-    symptom_analyis: Dict[str, Any]
+    symptom_analysis: Dict[str, Any]
     urgency_result: Dict[str, Any]
 
     raw_recommendation: str

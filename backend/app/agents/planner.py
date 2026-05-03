@@ -122,7 +122,7 @@ class PlannerAgent(A2AAgent):
 
             {
                 "step_id": 3,
-                "tool": "UrgentClassifierTool",
+                "tool": "UrgencyClassifierTool",
                 "description": "Classify urgency level"
             },
 
