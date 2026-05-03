@@ -1,5 +1,6 @@
 import logging
 import sys
+import os
 
 def setup_logging(level=logging.INFO):
     """Centralized logging configuration."""
@@ -21,6 +22,7 @@ def setup_logging(level=logging.INFO):
     logger.addHandler(console)
 
     #File handler for audit 
+    os.makedirs('logs', exist_ok=True)
     file_handler = logging.FileHandler('logs/carebridge.log')
     file_handler.setLevel(logging.INFO)
     file_handler.setFormatter(formatter)

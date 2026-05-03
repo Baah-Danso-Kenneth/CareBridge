@@ -1,4 +1,4 @@
-from backend.app.utils import logging
+from app.utils import logging
 import json
 import logging
 from typing import Dict, Any
@@ -39,7 +39,7 @@ class PlannerAgent(A2AAgent):
         )
 
 
-    def process_taks(self, task: A2ATask) -> A2ATask:
+    def process_task(self, task: A2ATask) -> A2ATask:
         """ Process patient symptoms and create execution"""
         task.update_status(A2ATaskStatus.WORKING)
         logger.info(f"PlannerAgent:Creating plan for patient")
@@ -77,7 +77,7 @@ class PlannerAgent(A2AAgent):
 
 
 
-    def _create_paln(self, symptoms: str, patient_id: str) -> Dict[str, Any]:
+    def _create_plan(self, symptoms: str, patient_id: str) -> Dict[str, Any]:
         """Create execution plan using LLM"""
 
         human_prompt = PLANNER_HUMAN_PROMPT.format(
@@ -122,7 +122,7 @@ class PlannerAgent(A2AAgent):
 
             {
                 "step_id": 3,
-                "tool": "UrgentClassifierTool",
+                "tool": "UrgencyClassifierTool",
                 "description": "Classify urgency level"
             },
 

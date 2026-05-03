@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="CareBridge - Healthcare Triage Agent",
-    description="Autonomous AI agent for patient symtom triage and urgency classification",
+    description="Autonomous AI agent for patient symptom triage and urgency classification",
     version="2.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
@@ -37,10 +37,10 @@ app.add_middleware(
 
 try:
     agent_service = AgentService()
-    logger.info("Agent service Initialized successfully")
+    logger.info("Agent service initialized successfully")
 
 except Exception as e:
-    logger.error(f"Failed to Initialized agent service {e}")
+    logger.error(f"Failed to initialize agent service {e}")
     raise
 
 
@@ -91,7 +91,7 @@ async def triage(request: TriageRequest):
     - patient_id: Unique patient identifier
     - symptoms: Description of symptoms
     - fhir_token: Optional FHIR authentication token
-    - conversation_id: Optional existing converstion ID
+    - conversation_id: Optional existing conversation ID
 
     **Output**
     - recommendation: Human-readable advice
@@ -110,7 +110,7 @@ async def triage(request: TriageRequest):
             conversational_id=request.conversation_id
         )
 
-        if not result.get("sucess"):
+        if not result.get("success"):
             raise HTTPException(
                 status_code=500,
                 detail=result.get("errors", ["Unknown error"])[0]
@@ -122,7 +122,7 @@ async def triage(request: TriageRequest):
             recommendation=result["recommendation"],
             urgency_level = result["urgency_level"],
             possible_conditions= result.get("possible_conditions", []),
-            quality_score = result["quality_score"],
+            quality_score = result["score"],
             attempts_used = result["attempts_used"],
             disclaimer_added = result["disclaimer_added"],
             processing_time_ms=result["processing_time_ms"]

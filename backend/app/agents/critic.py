@@ -1,4 +1,4 @@
-from backend.app.utils import logging
+from app.utils import logging
 import json
 import logging
 from typing import Dict, Any, List

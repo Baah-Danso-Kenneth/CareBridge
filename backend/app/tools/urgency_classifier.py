@@ -6,8 +6,8 @@ from typing import Dict, Any, Optional, List
 from app.tools.base import MCPToolServer, MCPToolResult, MCPToolStatus, MCPToolDescriptor
 
 from app.prompts import (
-    URGENCY_CLASSIFICATION_SYSTEM_PROMPT,
-    URGENCY_CLASSIFICATION_HUMAN_PROMPT,
+    URGENCY_CLASSIFIER_SYSTEM_PROMPT,
+    URGENCY_CLASSIFIER_HUMAN_PROMPT,
     EMERGENCY_DISCLAIMER
 )
 
@@ -51,7 +51,7 @@ class UrgencyClassifierTool(MCPToolServer):
 
         disclaimer = self._check_emergency_keywords(symptoms)
 
-        user_prompt = URGENCY_CLASSIFICATION_HUMAN_PROMPT.format(
+        user_prompt = URGENCY_CLASSIFIER_HUMAN_PROMPT.format(
             symptoms=symptoms,
             patient_history=history_text,
             possible_conditions=conditions_text,
@@ -60,7 +60,7 @@ class UrgencyClassifierTool(MCPToolServer):
 
 
         return {
-            "system": URGENCY_CLASSIFICATION_SYSTEM_PROMPT,
+            "system": URGENCY_CLASSIFIER_SYSTEM_PROMPT,
             "user": user_prompt
         }
     
@@ -141,9 +141,9 @@ class UrgencyClassifierTool(MCPToolServer):
         parts = []
 
         if patient_history.get("conditions"):
-            parts.append("Existing conditions: {', '.join(patient_history['conditions'])}")
+            parts.append(f"Existing conditions: {', '.join(patient_history['conditions'])}")
         if patient_history.get("medications"):
-            parts.append("Current medications: {', '.join(patient_history['medications'])}")
+            parts.append(f"Current medications: {', '.join(patient_history['medications'])}")
         if patient_history.get("allergies"):
             parts.append(f"Allergies: {', '.join(patient_history['allergies'])}")
 
@@ -161,7 +161,7 @@ class UrgencyClassifierTool(MCPToolServer):
         for condition in possible_conditions[:5]:
             name = condition.get("name", "Unknown")
             confidence = condition.get("confidence", 0)
-            lines.append(f"-{name} (confidence: {confidence})")
+            lines.append(f"- {name} (confidence: {confidence})")
 
         return "\n".join(lines) if lines else "None Provided"
     

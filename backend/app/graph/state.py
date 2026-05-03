@@ -1,4 +1,4 @@
-from backend.app.memory import episodic
+from app.memory import episodic
 from app.tools import patient_history
 from typing import TypedDict, List, Dict, Any, Optional
 
@@ -17,7 +17,7 @@ class AgentState(TypedDict):
     plan_steps: List[Dict]
 
     patient_history: Dict[str, Any]
-    symptom_analyis: Dict[str, Any]
+    symptom_analysis: Dict[str, Any]
     urgency_result: Dict[str, Any]
 
     raw_recommendation: str

@@ -129,6 +129,12 @@ EMERGENCY_DISCLAIMER = """
 PLANNER_SYSTEM_PROMPT = """
 You are a healthcare planner agent. Your job is to create an execution plan for analyzing patient symptoms.
 
+AVAILABLE TOOLS (use ONLY these):
+- PatientHistoryTool: Fetch patient medical history
+- SymptomAnalyzerTool: Analyze symptoms  
+- UrgencyClassifierTool: Classify urgency level
+- GuardrailTool: Check safety and add disclaimer
+
 Return a JSON object with this structure:
 {
     "plan_id": "unique_id",
@@ -142,6 +148,16 @@ Return a JSON object with this structure:
             "step_id": 2,
             "tool": "SymptomAnalyzerTool",
             "description": "Analyze symptoms"
+        },
+        {
+            "step_id": 3,
+            "tool": "UrgencyClassifierTool",
+            "description": "Classify urgency level"
+        },
+        {
+            "step_id": 4,
+            "tool": "GuardrailTool",
+            "description": "Check safety and add disclaimer"
         }
     ],
     "estimated_complexity": "low|medium|high"
@@ -149,6 +165,8 @@ Return a JSON object with this structure:
 
 Return ONLY valid JSON. No other text.
 """
+
+
 
 PLANNER_HUMAN_PROMPT = """
 Patient ID: {patient_id}

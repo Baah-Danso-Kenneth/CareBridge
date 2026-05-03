@@ -34,7 +34,7 @@ class TriageResponse(BaseModel):
 
     disclaimer_added: bool = Field(..., description="Whether medical dislaimer was added or Not")
 
-    process_time_ms: int = Field(..., description="Total processing time in milliseconds")
+    processing_time_ms: int = Field(..., description="Total processing time in milliseconds")
     timestamp: datetime = Field(..., default_factory=datetime.now)
 
 

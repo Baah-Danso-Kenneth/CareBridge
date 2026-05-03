@@ -45,7 +45,7 @@ class A2ATask:
     def update_status(self, status: str):
         """Update task status and timestamp"""
         self.status = status
-        self.update_at = datetime.now().isoformat()
+        self.updated_at = datetime.now().isoformat()
         
     
     def to_dict(self) -> Dict[str, Any]:
