@@ -48,7 +48,10 @@ class AgentService:
         logger.info("Agents injected into LangGraph nodes")
 
     
-    def triage(self, patient_id: str, symptoms: str, fhir_token: Optional[str]=None, conversational_id: Optional[str] = None) -> Dict[str, Any]:
+    def triage(self, patient_id: str, symptoms: str,
+                fhir_token: Optional[str]=None,
+                fhir_url: Optional[str] = None,
+                conversational_id: Optional[str] = None) -> Dict[str, Any]:
         """
         Process a patient triage request.
 
@@ -75,7 +78,10 @@ class AgentService:
             symptoms=symptoms,
             conversation_id=conversational_id
         )
-
+        
+        initial_state["fhir_url"]=fhir_url
+        initial_state["fhir_token"] = fhir_token
+        
         initial_state["episodic_context"] = {
             "recent_sessions": episodic_context,
             "preferences": episodic_memory.get_preferences()

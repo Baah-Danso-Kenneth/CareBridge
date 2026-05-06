@@ -78,9 +78,10 @@ class A2AAgentCard:
     output_modes: List[str] = field(default_factory=list)
     skills: List[Dict[str, Any]] = field(default_factory=list)
     endpoint: str = ""
+    extensions: List[Dict[str, Any]] = field(default_factory=list)
 
     def  to_dict(self) -> Dict[str, Any]:
-        return {
+        result =  {
             "agent_id": self.agent_id,
             "name": self.name,
             "version": self.version,
@@ -91,6 +92,14 @@ class A2AAgentCard:
             "skills": self.skills,
             "endpoint": self.endpoint
         }
+
+        if self.extensions:
+            result["capabilities"] = {
+                "extensions": self.extensions
+            }
+
+        return result
+    
 
 
 #Base A2A Agent

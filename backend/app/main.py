@@ -44,7 +44,78 @@ except Exception as e:
     raise
 
 
-@app.get("/", tags=["Health"])
+
+@app.post("/")
+async def handle_a2a_message(request: Dict[str, Any]):
+    """
+    A2A endpoint for Prompt Opinion Platform.
+    Receives messages in JSON-RPC format with FHIR context in metadata
+    """
+
+    logger.info(f"A2A message receied: {request.get("method")}")
+
+    try:
+        params = request.get("params", {})
+        message = params.get("message", {})
+        metadata = message.get("metadata", {})
+        fhir_context = metadata.get("https://app.promptopinion.ai/schemas/a2a/v1/fhir-context", {})
+
+        fhir_url = fhir_context.get("fhirUrl")
+        fhir_token = fhir_context.get("fhirToken")
+        patient_id = fhir_context.get("patientId")
+
+        parts = message.get("pars", [])
+
+        symptoms = ""
+
+        for part in parts:
+            if isinstance(part, dict) and "text" in part:
+                symptoms = part["text"]
+                break
+            elif isinstance(part, str):
+                symptoms = part
+                break
+
+        if not symptoms:
+            symptoms = message.get("text", "")
+
+
+        result = agent_service.triage(
+            patient_id = patient_id or "UNKNOWN",
+            symptoms=symptoms,
+            fhir_token=fhir_token,
+            fhir_url=fhir_url,
+            conversational_id=None
+        )
+
+        return {
+            "jsonrpc": "2.0",
+            "id": request.get("id"),
+
+            "result": {
+                "message": {
+                    "role": "assistant",
+                    "parts": [{"text": result.get("recommendation", "Unable to pass result")}]
+                }
+            }
+        }
+    
+    except Exception as e:
+        logger.error(f"A2A endpoint failed: {e}")
+
+        return {
+            "jsonrpc": "2.0",
+            "id": request.get("id"),
+            "error": {
+                "code": -32603,
+                "message": str(e)
+            }
+        }
+
+
+
+
+@app.get("/default", tags=["Health"])
 async def root():
     """Root endpoint - API information """
     return {
@@ -71,6 +142,8 @@ async def get_status():
     except Exception as e:
         logger.error(f"Status check failed: {e}")
         return {"status": "unhealthy", "error": str(e)}
+
+
 
 
     

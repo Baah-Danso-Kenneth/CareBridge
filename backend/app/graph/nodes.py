@@ -95,7 +95,9 @@ def executor_node(state: AgentState) -> Dict[str, Any]:
             "symptoms": symptoms,
             "patient_id": patient_id,
             "attempt": attempt,
-            "revision_feedback": revision_feedback
+            "revision_feedback": revision_feedback,
+            "fhir_url": state.get("fhir_url"),
+            "fhir_token": state.get("fhir_token")
         }
     )
 

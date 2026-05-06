@@ -24,7 +24,7 @@ class PatientHistoryTool(MCPToolServer):
             }
         )
 
-    def execute(self, patient_id: str, fhir_token: Optional[str] = None) -> MCPToolResult:
+    def execute(self, patient_id: str, fhir_token: Optional[str] = None, fhir_url: Optional[str]=None) -> MCPToolResult:
         logger.info(f"PatientHistoryTool: fetching data for patient_id: {patient_id}")
 
         conditions = []
@@ -39,7 +39,8 @@ class PatientHistoryTool(MCPToolServer):
                 if fhir_token:
                     headers["Authorization"] = f"Bearer {fhir_token}"
                 
-                conditions_url = f"{config.FHIR_BASE_URL}/Condition?patient={patient_id}"
+                base_url= fhir_url or config.FHIR_BASE_URL
+                conditions_url = f"{base_url}/Condition?patient={patient_id}"
                 logger.debug(f"Fetching conditions: {conditions_url}")
 
                 response = requests.get(

@@ -21,6 +21,8 @@ class AgentState(TypedDict):
     urgency_result: Dict[str, Any]
 
     raw_recommendation: str
+    fhir_url: Optional[str]
+    fhir_token: Optional[str]
     final_recommendation: str
 
     critic_score: float

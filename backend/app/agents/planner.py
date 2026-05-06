@@ -35,7 +35,20 @@ class PlannerAgent(A2AAgent):
                 "description": "Create execution",
                 "input": {"symptoms": "string"},
                 "output": {"plan": "dict", "steps": "list"}
-            }]
+            }],
+
+            extensions= [
+                {
+                    "uri": "https://app.promptopinion.ai/schemas/a2a/v1/fhir-context",
+                    "required": False,
+                    "params": {
+                        "scopes": [
+                            {"name": "patient/Patient.rs", "required": True},
+                            {"name": "patient/Condition.rs", "required": True}
+                        ]
+                    }
+                }
+            ]
         )
 
 

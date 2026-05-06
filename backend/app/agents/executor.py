@@ -52,7 +52,21 @@ class ExecutorAgent(A2AAgent):
                     "recommendation": "string",
                     "urgency": "string"
                 }
-            }]
+            }],
+
+            extensions= [
+                {
+                    "uri": "https://app.promptopinion.ai/schemas/a2a/v1/fhir-context",
+                    "required": False,
+                    "params": {
+                        "scopes": [
+                            {"name": "patient/Patient.rs", "required" : True},
+                            {"name": "patient/Condition.rs", "required" : True},
+                            {"name": "patient/MedicationRequest.rs", "required" : True}
+                        ]
+                    }
+                }
+            ]
         )
 
 
@@ -65,6 +79,9 @@ class ExecutorAgent(A2AAgent):
         logger.info(f"ExecutorAgent: executing plan")
 
         try:
+            fhir_url = task.context.get("fhir_url")
+            fhir_token = task.context.get("fhir_url")
+
             plan = task.context.get("plan", {})
             symptoms = task.context.get("symptoms", "")
             patient_id = task.context.get("patient_id", "")
@@ -81,7 +98,11 @@ class ExecutorAgent(A2AAgent):
                 logger.info(f"Executing step {step.get("step_id")}: {tool_name}")
 
                 if tool_name == "PatientHistoryTool":
-                    result = self.patient_history.execute(patient_id=patient_id)
+                    result = self.patient_history.execute(
+                        patient_id=patient_id,
+                        fhir_token=fhir_token,
+                        fhir_url=fhir_url
+                    )
                     if result.status.value == "success":
                         patient_history = result.content
 
